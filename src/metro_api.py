@@ -7,8 +7,10 @@ from secrets import secrets
 # Keeping a global reference for this
 _network = Network(status_neopixel=board.NEOPIXEL)
 
+
 class MetroApiOnFireException(Exception):
     pass
+
 
 class MetroApi:
     def fetch_train_predictions(station_code: str, group: str) -> [dict]:
@@ -23,9 +25,11 @@ class MetroApi:
 
             print('Received response from WMATA api...')
 
-            trains = filter(lambda t: t['Group'] == group, train_data['Trains'])
+            trains = filter(lambda t: t['Group'] ==
+                            group, train_data['Trains'])
 
-            normalized_results = list(map(MetroApi._normalize_train_response, trains))
+            normalized_results = list(
+                map(MetroApi._normalize_train_response, trains))
 
             return normalized_results
         except RuntimeError:
@@ -35,7 +39,7 @@ class MetroApi:
                 return MetroApi._fetch_train_predictions(station_code, group, retry_attempt + 1)
             else:
                 raise MetroApiOnFireException()
-    
+
     def _normalize_train_response(train: dict) -> dict:
         line = train['Line']
         destination = train['Destination']
@@ -49,7 +53,7 @@ class MetroApi:
             'destination': destination,
             'arrival': arrival
         }
-    
+
     def _get_line_color(line: str) -> int:
         if line == 'RD':
             return 0xFF0000
