@@ -9,6 +9,7 @@ from config import config
 
 class CaBiApi:
     def fetch_station_information(station_ids: [str]) -> [dict]:
+        print(station_ids)
         return CaBiApi._fetch_station_information(station_ids)
 
     def _fetch_station_information(station_ids: [str]) -> [dict]:
